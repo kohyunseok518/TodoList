@@ -1,47 +1,50 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+  <div class="container">
+    <div class="Header">
+        <span>Todo List</span>
     </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+    <div class="main">
+      <div class="dashBorad"></div>
+      <div class="displayList"></div>
+    </div>
+  </div>
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
+  
+<script setup>
+  
+</script>
+  
+<style>
+  * {
+    margin: 0px;
+    padding: 0px;
+  }
+  .Header {
+    background: #6590FF;
+    width: 100%;
+    height: 120px;
     display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    color: white;
   }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
+  .main {
     display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap : 20px;
   }
-}
+  .dashBorad {
+    width: 35%;
+    height: 603px;
+    background: #6590FF;
+    margin-top: 30px;
+  }
+  .displayList {
+    width: 65%;
+    height: 603px;
+    background: #6590FF;
+    margin-top: 30px;
+  }
 </style>
