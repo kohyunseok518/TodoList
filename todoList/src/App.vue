@@ -3,8 +3,8 @@
     <Header>
     </Header>
     <div class="main">
-      <DashBoard/>
-      <DisplayList/>
+      <DashBoard @provide-list="saveList"/>
+      <DisplayList :listObj="list"/>
     </div>
   </div>
 </template>
@@ -13,7 +13,12 @@
   import Header from './components/Header.vue';
   import DisplayList from './components/DisplayList.vue';
   import DashBoard from './components/DashBoard.vue';
+  import {ref} from 'vue';
 
+  const list = ref([]);
+  const saveList = ((list) => {
+    list.value = list;
+  })
 
 </script>
   

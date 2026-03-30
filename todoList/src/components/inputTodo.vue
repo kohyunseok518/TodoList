@@ -1,27 +1,59 @@
 <!-- 
-1. 일단 배열로 객체 받는 거 만들어두기
-2. 그리고 일단 로컬에 저장하기
-3. 출력은 무조건 객체로 변환시켜서 출력해줘야 함 
+컴포넌트 구조 변경
+컴포넌트가 마운트 될 때 저장된 정보 있으면 데리고 올리기
+1. todo 입력 받고 -> 스트링으로 변환헤서 저장 
+2.  객체가 있으면 변환해서 배열에 넣기
+3. 컴포넌트가 마운트 될 때 로컬스토리지에 데이터가 있으면 태우기
+4. 객체로 변환해서 다시 배열에 꽂기
+
+
+-> emit할 데이터 todo만 emit하고 돌리면 됨
+[{...}, {...}, {...}] -> 문자열
+객체 변환 [{...}, {...}, {...}] 
+-->
+
+<!-- 
+구조 수정
 -->
 
 <template> 
 <div>
-    <input type="text" id="inputTodo"><button id="inputBtn">추가하기</button>
-    <div class="userInfo">
-        <h3>전체 할 일 <span>안녕</span></h3>
-        <h3>완료한 일</h3>
-        <h3>남은 할 일</h3>
-        <span>{{ test2 }}</span>
-    </div>
+    <input type="text" id="inputTodo" v-model="msg">
+    <button id="inputBtn" @click="addTodo">추가하기</button>
 </div>
 </template>
     
 <script setup>
-    import {ref, defineEmits} from 'vue';
+import {ref, defineEmits, onMounted} from 'vue';
 
     const msg = ref('');
-    const test = window.localStorage.setItem('todo1','{id: 1, todo : "안녕", completed : false}');
-    const test2 = window.localStorage.getItem('todo1');
+    const list = ref([]);
+
+    function addTodo() {
+        // 객체 담을 일회용 변수 정의
+       const item = {id : Math.random(), todo : msg.value, completed : false};
+       
+        // 객체 배열에 담기 및 문자열로 변환 -> 객체 배열 자체를 문자열로 변환
+        list.value.push(item);
+        localStorage.setItem('user', JSON.stringify(list.value));
+        addTodoItem();
+        msg.value = "";
+    }
+
+    // 로직 완성
+    onMounted(() => {
+        if(localStorage.length > 0) {
+            const key = localStorage.getItem('user');
+            list.value = JSON.parse(key);
+            addTodoItem();
+        } 
+    })
+
+
+    const emit = defineEmits(['input-list']);
+    function addTodoItem () {
+        emit('input-list', list.value);
+    }
 </script>
     
 <style scoped>
@@ -38,10 +70,5 @@
     height: 55px;
     background: white;
     border: 0;
-}
-.userInfo {
-    height: 300px;
-    width: 500px;
-    background: white;
 }
 </style>
