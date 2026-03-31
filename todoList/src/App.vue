@@ -3,8 +3,8 @@
     <Header>
     </Header>
     <div class="main">
-      <DashBoard />
-      <DisplayList />
+      <DashBoard :listNew="list"/>
+      <DisplayList @provide-list="throwList"/>
     </div>
   </div>
 </template>
@@ -15,8 +15,11 @@
   import DashBoard from './components/DashBoard.vue';
   import {ref} from 'vue';
 
-  const list = ref([]);
+const list = ref([]);
 
+const throwList = ((item) => {
+  list.value = item;
+})
 
 </script>
   

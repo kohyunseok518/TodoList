@@ -20,7 +20,7 @@
     
 <script setup>
 import inputTodo from './inputTodo.vue';
-import { ref, onMounted, defineEmits, computed } from 'vue';
+import { ref, onMounted, computed, defineEmits, watch } from 'vue';
 
 const list = ref([]);
 const editMsg = ref('');
@@ -29,7 +29,6 @@ function deleteTodo(item) {
     list.value.splice(item, 1);
     // 다시 배열에 저장
     saveItem();
-
 }
 
 const addTodo = (msg) => {
@@ -43,11 +42,8 @@ const addTodo = (msg) => {
 
 // 앱이 마운트 될 때 로컬 저장소에 데이터 있으면 불러오기
 onMounted(() => {
-    if(localStorage.length > 0) {
-        const key = localStorage.getItem('user');
-        list.value = JSON.parse(key);
-    } 
-})
+      parseList();
+    })
 
 function saveItem() {
     localStorage.setItem('user', JSON.stringify(list.value));
@@ -60,8 +56,20 @@ function editUp (item) {
     saveItem();
 }
 
+function parseList() {
+    if(localStorage.length > 0) {
+        const key = localStorage.getItem('user');
+        list.value = JSON.parse(key);
+    } 
+}
 
+// emit
+const emits = defineEmits(['provide-list']);
 
+watch(list, () => {
+    emits('provide-list',list.value);
+    console.log('데이터 발사~');
+})
 
 </script>
     
