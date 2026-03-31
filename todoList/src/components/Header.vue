@@ -1,6 +1,6 @@
 <template>
     <div class="Header">
-        <span>Todo List</span>
+        <span id="title">Todo List</span>
     </div>
 </template>
     
@@ -8,6 +8,9 @@
     
 </script>
     
-<style>
-    
+<style scoped>
+    .Header {
+        display: flex;
+        align-items: center;
+    }
 </style>

@@ -10,49 +10,40 @@
 -> emit할 데이터 todo만 emit하고 돌리면 됨
 [{...}, {...}, {...}] -> 문자열
 객체 변환 [{...}, {...}, {...}] 
+
+------
+로직 수정
+현재 문제 
+입력 컴포넌트에서 입력, 저장, 변환 등 모든 로직 처리하는 중
+
+해결 방안
+-> 입력과 동시에 로컬 저장소에 저장하기 때문에 그냥 입력 컴포넌트에서는 메시지 전달만 하고
+-> displayList에서 저장, 업데이트, 삭제 등 모든 로직 처리하게 구조 변경하기
+
+로직 꼬인 건 수정 완료
 -->
 
 <!-- 
-구조 수정
+UI 구조 수정
+list 박스 전체 크기 (20% 입력 / 80% 출력 컴포넌트로 화면 분할)
+대시보드 초기화면 완성하기 -> 프로그레스바 구현
 -->
 
 <template> 
 <div>
     <input type="text" id="inputTodo" v-model="msg">
-    <button id="inputBtn" @click="addTodo">추가하기</button>
+    <button id="inputBtn" @click="addTodoItem">Add</button>
 </div>
 </template>
     
 <script setup>
-import {ref, defineEmits, onMounted} from 'vue';
+import {ref, defineEmits} from 'vue';
 
     const msg = ref('');
-    const list = ref([]);
-
-    function addTodo() {
-        // 객체 담을 일회용 변수 정의
-       const item = {id : Math.random(), todo : msg.value, completed : false};
-       
-        // 객체 배열에 담기 및 문자열로 변환 -> 객체 배열 자체를 문자열로 변환
-        list.value.push(item);
-        localStorage.setItem('user', JSON.stringify(list.value));
-        addTodoItem();
-        msg.value = "";
-    }
-
-    // 로직 완성
-    onMounted(() => {
-        if(localStorage.length > 0) {
-            const key = localStorage.getItem('user');
-            list.value = JSON.parse(key);
-            addTodoItem();
-        } 
-    })
-
 
     const emit = defineEmits(['input-list']);
     function addTodoItem () {
-        emit('input-list', list.value);
+        emit('input-list', msg.value);
     }
 </script>
     
@@ -67,8 +58,10 @@ import {ref, defineEmits, onMounted} from 'vue';
 }
 #inputBtn {
     width: 70px;
-    height: 55px;
-    background: white;
+    height: 57px;
+    background: navy;
+    color: white;
     border: 0;
+    cursor: pointer;
 }
 </style>
